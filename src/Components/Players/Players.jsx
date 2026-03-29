@@ -2,10 +2,11 @@ import React, { use, useState } from "react";
 import AvilablePlayers from "../AvailablePlayers/AvilablePlayers";
 import SelectedPlayer from "../SelectedPlayer/SelectedPlayer";
 
-const Players = ({ playerpromise }) => {
+const Players = ({ playerpromise, setCoin, coin }) => {
   const players = use(playerpromise);
 
   const [selected, SetSelected] = useState("available");
+  const [selectedPlayers, setSelectedPlayers] = useState([]);
 
   return (
     <div className="my-15">
@@ -13,7 +14,9 @@ const Players = ({ playerpromise }) => {
         {selected === "available" ? (
           <h2 className="font-bold text-xl">Available Players</h2>
         ) : (
-          <h2 className="font-bold text-xl">Selected Players</h2>
+          <h2 className="font-bold text-xl">
+            Selected Players ({selectedPlayers.length}/{players.length})
+          </h2>
         )}
         <div>
           <button
@@ -26,16 +29,27 @@ const Players = ({ playerpromise }) => {
             onClick={() => SetSelected("selected")}
             className={`btn ${selected === "selected" ? "bg-[#E7FE29]" : ""} rounded-l-none rounded-r-xl`}
           >
-            Selected
+            Selected({selectedPlayers.length})
           </button>
         </div>
       </div>
 
       <div>
         {selected === "available" ? (
-          <AvilablePlayers players={players}></AvilablePlayers>
+          <AvilablePlayers
+            players={players}
+            setCoin={setCoin}
+            coin={coin}
+            setSelectedPlayers={setSelectedPlayers}
+            selectedPlayers={selectedPlayers}
+          ></AvilablePlayers>
         ) : (
-          <SelectedPlayer></SelectedPlayer>
+          <SelectedPlayer
+            selectedPlayers={selectedPlayers}
+            setSelectedPlayers={setSelectedPlayers}
+            coin={coin}
+            setCoin={setCoin}
+          ></SelectedPlayer>
         )}
       </div>
     </div>
